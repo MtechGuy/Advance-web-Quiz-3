@@ -59,7 +59,7 @@ func (a *applicationDependencies) readJSON(w http.ResponseWriter,
 		switch {
 		case errors.As(err, &syntaxError):
 			return fmt.Errorf("the body contains badly-formed JSON (at character %d)", syntaxError.Offset)
-			// Decode can also send back an io error message
+
 		case errors.Is(err, io.ErrUnexpectedEOF):
 			return errors.New("the body contains badly-formed JSON")
 
@@ -110,9 +110,9 @@ func (a *applicationDependencies) readJSON(w http.ResponseWriter,
 }
 
 func (a *applicationDependencies) readIDParam(r *http.Request) (int64, error) {
-	// Get the URL parameters
+
 	params := httprouter.ParamsFromContext(r.Context())
-	// Convert the id from string to int
+
 	id, err := strconv.ParseInt(params.ByName("id"), 10, 64)
 	if err != nil || id < 1 {
 		return 0, errors.New("invalid id parameter")

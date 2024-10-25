@@ -41,13 +41,12 @@ func main() {
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
-	// the call to openDB() sets up our connection pool
 	db, err := openDB(setting)
 	if err != nil {
 		logger.Error("Database connection failed")
 		os.Exit(1)
 	}
-	// release the database resources before exiting
+
 	defer db.Close()
 
 	logger.Info("Database connection pool established")
@@ -75,26 +74,22 @@ func main() {
 }
 
 func openDB(settings serverConfig) (*sql.DB, error) {
-	// open a connection pool
+
 	db, err := sql.Open("postgres", settings.db.dsn)
 	if err != nil {
 		return nil, err
 	}
 
-	// set a context to ensure DB operations don't take too long
 	ctx, cancel := context.WithTimeout(context.Background(),
 		5*time.Second)
 	defer cancel()
 
-	// let's test if the connection pool was created
-	// we trying pinging it with a 5-second timeout
 	err = db.PingContext(ctx)
 	if err != nil {
 		db.Close()
 		return nil, err
 	}
 
-	// return the connection pool (sql.DB)
 	return db, nil
 
 }

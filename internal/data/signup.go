@@ -41,7 +41,7 @@ func ValidateSignup(v *validator.Validator, signup *Signup) {
 }
 
 func (c SignupModel) Insert(signup *Signup) error {
-	fullName := signup.GetFullName() // Use GetFullName to generate the full name
+	fullName := signup.GetFullName()
 
 	query := `
 		INSERT INTO signup (email, full_name)
@@ -89,7 +89,6 @@ func (c SignupModel) Get(id int64) (*Signup, error) {
 		}
 	}
 
-	// Split full_name into FName and LName
 	names := strings.SplitN(fullName, " ", 3)
 	signup.FName = names[0]
 	if len(names) > 1 {
@@ -99,7 +98,6 @@ func (c SignupModel) Get(id int64) (*Signup, error) {
 		signup.LName = names[2]
 	}
 
-	// Assign FullName
 	signup.FullName = signup.GetFullName()
 
 	return &signup, nil
@@ -188,7 +186,6 @@ func (c SignupModel) GetAll() ([]*Signup, error) {
 			return nil, err
 		}
 
-		// Assign the full name directly to FullName
 		signup.FullName = fullName
 
 		names := strings.SplitN(fullName, " ", 3)
