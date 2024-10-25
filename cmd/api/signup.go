@@ -54,7 +54,7 @@ func (a *applicationDependencies) createSignupHandler(w http.ResponseWriter, r *
 	}
 
 	headers := make(http.Header)
-	headers.Set("Location", fmt.Sprintf("/v1/signup/%d", signup.ID))
+	headers.Set("Location", fmt.Sprintf("/signup/%d", signup.ID))
 
 	data := envelope{
 		"signup": signup,
